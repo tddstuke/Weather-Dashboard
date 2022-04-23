@@ -13,6 +13,13 @@
       rel="stylesheet"
       href=" http://openweathermap.org/img/wn/10d@2x.png"
     />
+    <!-- dayjs -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"
+      integrity="sha512-Ot7ArUEhJDU0cwoBNNnWe487kjL5wAOsIYig8llY/l0P2TUFwgsAHVmrZMHsT8NGo+HwkjTJsNErS6QqIkBxDw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <title>Weather Dashboard</title>
   </head>
   <body>
@@ -21,8 +28,8 @@
         Weather Dashboard
       </h1>
     </header>
-    <div class="container row">
-      <form id="city-form" class="col-4">
+    <div id="container" class="row justify-content-between">
+      <form id="city-form" class="col-4 m-4">
         <h2 class="fs-5">Search for a City:</h2>
         <input
           class="form-control"
@@ -38,7 +45,6 @@
           Search
         </button>
       </form>
-      <div class="col-8"></div>
     </div>
     <script src="./assets/js/script.js"></script>
   </body>
