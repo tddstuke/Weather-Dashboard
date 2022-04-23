@@ -2,6 +2,9 @@ var FormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city-name");
 var containerDiv = document.querySelector("#container");
 var iconUrl = "http://openweathermap.org/img/wn/";
+var weatherDiv = document.querySelector("#weather-div");
+
+// var weatherDiv;
 
 // get name of city from input
 var getCityName = function (event) {
@@ -64,6 +67,7 @@ var displayCurrent = function (weather) {
   var cityHeader = document.createElement("h2");
   cityHeader.textContent =
     cityInputEl.value.toUpperCase() + " " + dayjs().format("(MM/DD/YYYY)");
+  cityInputEl.value = "";
 
   var currentTemp = document.createElement("h4");
   currentTemp.textContent = "Temp: " + weather.temp + "°F";
@@ -84,10 +88,7 @@ var displayCurrent = function (weather) {
   console.log(weather.weather[0].icon);
 
   // append to div
-  var weatherDiv = document.createElement("div");
-  weatherDiv.classList = "col-7 border border-dark m-4";
-
-  containerDiv.appendChild(weatherDiv);
+  weatherDiv.innerHTML = "";
 
   weatherDiv.append(
     cityHeader,
@@ -96,6 +97,7 @@ var displayCurrent = function (weather) {
     currentHumid,
     currentUV
   );
+  weatherDiv.classList.add("border", "border-dark");
 };
 // save searches to page and local storage
 
