@@ -18,7 +18,7 @@
       </h1>
     </header>
     <div class="container row">
-      <form class="col-4">
+      <form id="city-form" class="col-4">
         <h2 class="fs-5">Search for a City:</h2>
         <input
           class="form-control"
@@ -26,9 +26,16 @@
           placeholder="Enter City Name"
           id="city-name"
         />
-        <button class="btn btn-info col-12 mt-3 p-0">Search</button>
+        <button
+          type="submit"
+          id="search-btn"
+          class="btn btn-info col-12 mt-3 p-0"
+        >
+          Search
+        </button>
       </form>
       <div class="col-8"></div>
     </div>
+    <script src="./assets/js/script.js"></script>
   </body>
 </html>
