@@ -6,8 +6,6 @@ var weatherDiv = document.querySelector("#weather-div");
 var historyBtn = document.querySelector(".btn-secondary");
 var searchedCities = [];
 
-// var weatherDiv;
-
 // get name of city from input
 var getCityName = function (event) {
   event.preventDefault();
@@ -45,12 +43,15 @@ var getCoordinates = function (cityName) {
         console.log(lat, lon);
 
         getWeather(lat, lon);
+
         console.log(searchedCities);
+
         if (searchedCities.includes(cityName)) {
           return;
         }
 
         searchedCities.push(cityName);
+
         historyCity(cityName);
 
         saveCity("cities", searchedCities);
@@ -108,7 +109,7 @@ var displayCurrent = function (weather) {
   // create data elements for display
   var iconImg = document.createElement("img");
   iconImg.src = iconUrl + iconEl + ".png";
-  console.log(iconImg.src);
+  // console.log(iconImg.src);
 
   var cityHeader = document.createElement("h2");
   cityHeader.textContent =
@@ -158,10 +159,34 @@ var displayLater = function (laterWeather) {
   laterHeader.textContent = "5-Day Forecast";
   laterDiv.appendChild(laterHeader);
 
-  laterWeather.slice(0, 5).forEach(function (day) {
-    var date = document.createElement("h4");
-    date.textContent = dayjs().add(1, "day").format("(MM/DD/YYYY)");
-    console.log(date);
+  var cardDiv = document.createElement("div");
+  cardDiv.classList = "row justify-content-around";
+  laterDiv.appendChild(cardDiv);
+
+  laterWeather.slice(0, 5).forEach(function (day, i) {
+    var dayDiv = document.createElement("div");
+    dayDiv.classList = "bg-secondary text-light p-2";
+
+    var date = document.createElement("h5");
+    date.textContent = dayjs()
+      .add(i + 1, "day")
+      .format("(MM/DD/YYYY)");
+
+    var icon = day.weather[0].icon;
+    var iconImg = document.createElement("img");
+    iconImg.src = iconUrl + icon + ".png";
+
+    var temp = document.createElement("h6");
+    temp.textContent = "Temp: " + day.temp.day + "°F";
+
+    var wind = document.createElement("h6");
+    wind.textContent = "Wind: " + day.wind_speed + " MPH";
+
+    var humidity = document.createElement("h6");
+    humidity.textContent = "Humidity: " + day.humidity + "%";
+
+    cardDiv.appendChild(dayDiv);
+    dayDiv.append(date, iconImg, temp, wind, humidity);
   });
 };
 
@@ -174,12 +199,10 @@ var saveCity = function (cities, searchedCities) {
 var loadCity = function () {
   searchedCities = JSON.parse(localStorage.getItem("cities"));
   if (!searchedCities) {
+    searchedCities = [];
     console.log("nope");
     return;
   }
-
-  // searchedCities.push(cityName);
-  // console.log(cities);
 
   searchedCities.forEach(function (city) {
     if (!city) {
