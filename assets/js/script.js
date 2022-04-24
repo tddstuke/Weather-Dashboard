@@ -38,9 +38,12 @@ var getCoordinates = function (cityName) {
         }
         console.log(data);
         var city = data[0];
+        var cityName = city.name;
+        console.log(cityName);
         var lat = city.lat;
         var lon = city.lon;
         console.log(lat, lon);
+
         getWeather(lat, lon);
 
         searchedCities.push(cityName);
@@ -139,9 +142,11 @@ var loadCity = function () {
     console.log("nope");
     return;
   }
-  cityName.trim();
+
+  searchedCities.push(cityName);
   var cities = cityName.split(",");
   console.log(cities);
+
   cities.forEach(function (city) {
     if (!city) {
       return;
@@ -150,15 +155,12 @@ var loadCity = function () {
   });
 };
 
-var getBtnId = function (event) {
-  console.log("click");
-};
-
 loadCity();
 
 FormEl.addEventListener("submit", getCityName);
-// document.addEventListener("click", function (e) {
-//   if (e.target && e.target.classList == "btn-secondary") {
-//     console.log("click");
-//   }
-// });
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.classList == "btn btn-secondary col-12 mt-3 p-0") {
+    var cityName = e.target.id;
+    cityInputEl.value = cityName;
+  }
+});
