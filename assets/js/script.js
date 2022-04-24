@@ -163,7 +163,7 @@ var displayLater = function (laterWeather) {
   cardDiv.classList = "row justify-content-around";
   laterDiv.appendChild(cardDiv);
 
-  laterWeather.slice(0, 5).forEach(function (day, i) {
+  laterWeather.slice(1, 6).forEach(function (day, i) {
     var dayDiv = document.createElement("div");
     dayDiv.classList = "bg-secondary text-light p-2";
 
