@@ -24,3 +24,4 @@ forecast.
   button to retrieve city data
 
   Deployed Page URL: https://tddstuke.github.io/Weather-Dashboard/
+![Screenshot (15)](https://user-images.githubusercontent.com/98231816/164999468-a89b0597-fc1e-4586-ae6b-1a11c8e854e7.png)
