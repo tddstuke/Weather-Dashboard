@@ -1,7 +1,7 @@
 var FormEl = document.querySelector("#city-form");
 var cityInputEl = document.querySelector("#city-name");
 var containerDiv = document.querySelector("#container");
-var iconUrl = "http://openweathermap.org/img/wn/";
+var iconUrl = "https://openweathermap.org/img/wn/";
 var weatherDiv = document.querySelector("#weather-div");
 var historyBtn = document.querySelector(".btn-secondary");
 var searchedCities = [];
@@ -22,7 +22,7 @@ var getCityName = function (event) {
 // convert city name to coordinates
 var getCoordinates = function (cityName) {
   var apiUrl =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     cityName +
     "&limit=1&appid=7e2f2ef59beaeb2845cc363aaa76489b";
 
