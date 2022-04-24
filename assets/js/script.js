@@ -93,11 +93,19 @@ var getWeather = function (lat, lon) {
 // display weather data on page
 var displayCurrent = function (weather) {
   console.log(weather);
+  var iconEl = weather.weather[0].icon;
+  console.log(weather.weather[0].icon);
   // create data elements for display
+  var iconImg = document.createElement("img");
+  iconImg.src = iconUrl + iconEl + ".png";
+  console.log(iconImg.src);
+
   var cityHeader = document.createElement("h2");
   cityHeader.textContent =
     cityInputEl.value.toUpperCase() + " " + dayjs().format("(MM/DD/YYYY)");
   cityInputEl.value = "";
+
+  cityHeader.appendChild(iconImg);
 
   var currentTemp = document.createElement("h4");
   currentTemp.textContent = "Temp: " + weather.temp + "°F";
@@ -113,9 +121,6 @@ var displayCurrent = function (weather) {
   var currentUV = document.createElement("h4");
   currentUV.textContent = "UV Index: " + weather.uvi;
   console.log(currentUV);
-
-  var iconEl = weather.weather[0].icon;
-  console.log(weather.weather[0].icon);
 
   // append to div
   weatherDiv.innerHTML = "";
