@@ -13,24 +13,12 @@ var getCityName = function (event) {
   event.preventDefault();
   var cityName = cityInputEl.value;
 
-  searchedCities.push(cityName);
-  saveCity("cities", searchedCities);
-  historyCity(cityName);
-
-  if (!cityName) {
+  if (cityName === "") {
     alert("Please Enter A Valid City Name");
+    return;
   }
 
   getCoordinates(cityName);
-};
-
-// create button in search history
-var historyCity = function (cityName) {
-  var cityBtn = document.createElement("button");
-  cityBtn.textContent = cityName.toUpperCase();
-  cityBtn.classList = "btn btn-secondary col-12 mt-3 p-0";
-  cityBtn.setAttribute("id", cityName);
-  FormEl.appendChild(cityBtn);
 };
 
 // convert city name to coordinates
@@ -43,15 +31,39 @@ var getCoordinates = function (cityName) {
   fetch(apiUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
+        if (data.length === 0) {
+          cityInputEl.value = "";
+          alert("No Data Available. Please Try Again");
+          return;
+        }
         console.log(data);
         var city = data[0];
         var lat = city.lat;
         var lon = city.lon;
         console.log(lat, lon);
         getWeather(lat, lon);
+
+        searchedCities.push(cityName);
+
+        saveCity("cities", searchedCities);
+
+        historyCity(cityName);
       });
     }
   });
+};
+
+// create button in search history
+var historyCity = function (cityName) {
+  if (cityName === "") {
+    return;
+  }
+
+  var cityBtn = document.createElement("button");
+  cityBtn.textContent = cityName.toUpperCase();
+  cityBtn.classList = "btn btn-secondary col-12 mt-3 p-0";
+  cityBtn.setAttribute("id", cityName);
+  FormEl.appendChild(cityBtn);
 };
 
 // fetch city weather using weather api
@@ -74,6 +86,7 @@ var getWeather = function (lat, lon) {
     }
   });
 };
+
 // display weather data on page
 var displayCurrent = function (weather) {
   console.log(weather);
@@ -113,21 +126,26 @@ var displayCurrent = function (weather) {
   );
   weatherDiv.classList.add("border", "border-dark");
 };
+
 // save searches to page and local storage
 var saveCity = function (cities, searchedCities) {
   localStorage.setItem("cities", searchedCities);
 };
 
+// load past searches from localstorage
 var loadCity = function () {
   var cityName = localStorage.getItem("cities", searchedCities);
   if (!cityName) {
     console.log("nope");
     return;
   }
-
+  cityName.trim();
   var cities = cityName.split(",");
   console.log(cities);
   cities.forEach(function (city) {
+    if (!city) {
+      return;
+    }
     historyCity(city);
   });
 };
@@ -139,3 +157,8 @@ var getBtnId = function (event) {
 loadCity();
 
 FormEl.addEventListener("submit", getCityName);
+// document.addEventListener("click", function (e) {
+//   if (e.target && e.target.classList == "btn-secondary") {
+//     console.log("click");
+//   }
+// });
