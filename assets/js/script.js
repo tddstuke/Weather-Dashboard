@@ -3,6 +3,8 @@ var cityInputEl = document.querySelector("#city-name");
 var containerDiv = document.querySelector("#container");
 var iconUrl = "http://openweathermap.org/img/wn/";
 var weatherDiv = document.querySelector("#weather-div");
+var historyBtn = document.querySelector(".btn-secondary");
+var searchedCities = [];
 
 // var weatherDiv;
 
@@ -10,13 +12,25 @@ var weatherDiv = document.querySelector("#weather-div");
 var getCityName = function (event) {
   event.preventDefault();
   var cityName = cityInputEl.value;
-  console.log(cityName);
+
+  searchedCities.push(cityName);
+  saveCity("cities", searchedCities);
+  historyCity(cityName);
 
   if (!cityName) {
     alert("Please Enter A Valid City Name");
   }
 
   getCoordinates(cityName);
+};
+
+// create button in search history
+var historyCity = function (cityName) {
+  var cityBtn = document.createElement("button");
+  cityBtn.textContent = cityName.toUpperCase();
+  cityBtn.classList = "btn btn-secondary col-12 mt-3 p-0";
+  cityBtn.setAttribute("id", cityName);
+  FormEl.appendChild(cityBtn);
 };
 
 // convert city name to coordinates
@@ -100,5 +114,28 @@ var displayCurrent = function (weather) {
   weatherDiv.classList.add("border", "border-dark");
 };
 // save searches to page and local storage
+var saveCity = function (cities, searchedCities) {
+  localStorage.setItem("cities", searchedCities);
+};
+
+var loadCity = function () {
+  var cityName = localStorage.getItem("cities", searchedCities);
+  if (!cityName) {
+    console.log("nope");
+    return;
+  }
+
+  var cities = cityName.split(",");
+  console.log(cities);
+  cities.forEach(function (city) {
+    historyCity(city);
+  });
+};
+
+var getBtnId = function (event) {
+  console.log("click");
+};
+
+loadCity();
 
 FormEl.addEventListener("submit", getCityName);
