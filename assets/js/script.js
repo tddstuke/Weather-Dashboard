@@ -123,14 +123,23 @@ var displayCurrent = function (weather) {
 
   var currentWind = document.createElement("h4");
   currentWind.textContent = "Wind: " + weather.wind_speed + " MPH";
-  console.log(currentWind);
+  // console.log(currentWind);
 
   var currentHumid = document.createElement("h4");
   currentHumid.textContent = "Humidity: " + weather.humidity + "%";
-  console.log(currentHumid);
+  // console.log(currentHumid);
 
   var currentUV = document.createElement("h4");
   currentUV.textContent = "UV Index: " + weather.uvi;
+  currentUV.classList.add("d-inline");
+  // add color coding for uvi
+  if (weather.uvi <= 2) {
+    currentUV.classList.add("bg-success");
+  } else if (weather.uvi < 6 && weather.uvi > 2) {
+    currentUV.classList.add("bg-warning");
+  } else {
+    currentUV.classList.add("bg-danger");
+  }
   console.log(currentUV);
 
   // append to div
