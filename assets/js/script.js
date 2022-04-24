@@ -45,12 +45,15 @@ var getCoordinates = function (cityName) {
         console.log(lat, lon);
 
         getWeather(lat, lon);
+        console.log(searchedCities);
+        if (searchedCities.includes(cityName)) {
+          return;
+        }
 
         searchedCities.push(cityName);
+        historyCity(cityName);
 
         saveCity("cities", searchedCities);
-
-        historyCity(cityName);
       });
     }
   });
@@ -77,17 +80,24 @@ var getWeather = function (lat, lon) {
     "&lon=" +
     lon +
     "&exclude=minutely,hourly&units=imperial&appid=7e2f2ef59beaeb2845cc363aaa76489b";
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        console.log(data);
-        var weather = data;
-        var nowWeather = weather.current;
+  fetch(apiUrl)
+    .then(function (response) {
+      if (response.ok) {
+        response.json().then(function (data) {
+          console.log(data);
+          var weather = data;
+          var nowWeather = weather.current;
+          var laterWeather = weather.daily;
+          console.log(laterWeather);
 
-        displayCurrent(nowWeather);
-      });
-    }
-  });
+          displayCurrent(nowWeather);
+          displayLater(laterWeather);
+        });
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
 // display weather data on page
@@ -125,34 +135,53 @@ var displayCurrent = function (weather) {
   // append to div
   weatherDiv.innerHTML = "";
 
-  weatherDiv.append(
+  var currentDiv = document.createElement("div");
+  weatherDiv.appendChild(currentDiv);
+
+  currentDiv.append(
     cityHeader,
     currentTemp,
     currentWind,
     currentHumid,
     currentUV
   );
-  weatherDiv.classList.add("border", "border-dark");
+  currentDiv.classList.add("border", "border-dark", "p-2");
+};
+
+// display five day forecast
+var displayLater = function (laterWeather) {
+  var laterDiv = document.createElement("div");
+  laterDiv.classList = "mt-2";
+  weatherDiv.appendChild(laterDiv);
+
+  var laterHeader = document.createElement("h3");
+  laterHeader.textContent = "5-Day Forecast";
+  laterDiv.appendChild(laterHeader);
+
+  laterWeather.slice(0, 5).forEach(function (day) {
+    var date = document.createElement("h4");
+    date.textContent = dayjs().add(1, "day").format("(MM/DD/YYYY)");
+    console.log(date);
+  });
 };
 
 // save searches to page and local storage
 var saveCity = function (cities, searchedCities) {
-  localStorage.setItem("cities", searchedCities);
+  localStorage.setItem("cities", JSON.stringify(searchedCities));
 };
 
 // load past searches from localstorage
 var loadCity = function () {
-  var cityName = localStorage.getItem("cities", searchedCities);
-  if (!cityName) {
+  searchedCities = JSON.parse(localStorage.getItem("cities"));
+  if (!searchedCities) {
     console.log("nope");
     return;
   }
 
-  searchedCities.push(cityName);
-  var cities = cityName.split(",");
-  console.log(cities);
+  // searchedCities.push(cityName);
+  // console.log(cities);
 
-  cities.forEach(function (city) {
+  searchedCities.forEach(function (city) {
     if (!city) {
       return;
     }
